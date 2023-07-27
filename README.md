@@ -145,3 +145,17 @@ We recommend maintainers and approvers to keep an eye on the
 [project board](https://github.com/orgs/open-telemetry/projects/3). All newly created
 PRs are automatically added to this board. (If you don't see the PR on the board you
 may need to add it manually by setting the Project field in the PR view).
+
+## Build Docker Image
+
+To build a Docker image for the collector, run the following command from the root of the repository:
+
+```shell
+cd $PROJECT_HOME
+cd cmd/otelcontribcol
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o otelcontribcol .
+docker build --no-cache -t opentelemetry-collector-contrib .
+docker tag opentelemetry-collector-contrib:latest sameeragarwal/opentelemetry-collector-contrib:latest
+docker login
+docker push sameeragarwal/opentelemetry-collector-contrib:latest
+```

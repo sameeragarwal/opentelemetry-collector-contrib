@@ -30,8 +30,8 @@ CREATE TABLE IF NOT EXISTS %s_exponential_histogram (
     MetricDescription String CODEC(ZSTD(1)),
     MetricUnit String CODEC(ZSTD(1)),
     Attributes Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	StartTimeUnix DateTime64(9) CODEC(Delta, ZSTD(1)),
-	TimeUnix DateTime64(9) CODEC(Delta, ZSTD(1)),
+	StartTimeUnix DateTime CODEC(Delta, ZSTD(1)),
+	TimeUnix DateTime CODEC(Delta, ZSTD(1)),
     Count Int64 CODEC(Delta, ZSTD(1)),
     Sum Float64 CODEC(ZSTD(1)),
     Scale Int32 CODEC(ZSTD(1)),
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS %s_exponential_histogram (
 	NegativeBucketCounts Array(UInt64) CODEC(ZSTD(1)),
 	Exemplars Nested (
 		FilteredAttributes Map(LowCardinality(String), String),
-		TimeUnix DateTime64(9),
+		TimeUnix DateTime,
 		Value Float64,
 		SpanId String,
 		TraceId String
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS %s_exponential_histogram (
 ) ENGINE MergeTree()
 %s
 PARTITION BY toDate(TimeUnix)
-ORDER BY (MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
+ORDER BY (MetricName, Attributes, toUnixTimestamp(TimeUnix))
 SETTINGS index_granularity=8192, ttl_only_drop_parts = 1;
 `
 	// language=ClickHouse SQL

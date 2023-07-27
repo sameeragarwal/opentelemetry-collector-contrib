@@ -129,7 +129,7 @@ const (
 	// language=ClickHouse SQL
 	createLogsTableSQL = `
 CREATE TABLE IF NOT EXISTS %s (
-     Timestamp DateTime64(9) CODEC(Delta, ZSTD(1)),
+     Timestamp DateTime CODEC(Delta, ZSTD(1)),
      TraceId String CODEC(ZSTD(1)),
      SpanId String CODEC(ZSTD(1)),
      TraceFlags UInt32 CODEC(ZSTD(1)),
